@@ -7,10 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "govi-adf"
 		},
-		"LS_Azure_Sql_Server_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'LS_Azure_Sql_Server'"
-		},
 		"LS_ADLS_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://goviadls.dfs.core.windows.net/"
@@ -30,6 +26,10 @@
 		"TGR_Event_Simple_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/ab7c09af-1330-4ad1-aa11-5763a4363a33/resourceGroups/test/providers/Microsoft.Storage/storageAccounts/goviadls"
+		},
+		"LS_Govi_Key_Vault_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://govi-vault.vault.azure.net/"
 		}
 	},
 	"variables": {
@@ -1384,12 +1384,18 @@
 					"authenticationType": "SQL",
 					"userName": "[parameters('LS_Azure_Sql_Server_properties_typeProperties_userName')]",
 					"password": {
-						"type": "SecureString",
-						"value": "[parameters('LS_Azure_Sql_Server_password')]"
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "LS_Govi_Key_Vault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "sql-db-password"
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Govi_Key_Vault')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/TGR_Event_Simple')]",
@@ -1463,6 +1469,19 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PL_For_Each_Demo')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_Govi_Key_Vault')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('LS_Govi_Key_Vault_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }
