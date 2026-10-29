@@ -1,0 +1,10 @@
+{
+	"name": "LS_Govi_Key_Vault",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://govi-vault.vault.azure.net/"
+		}
+	}
+}
