@@ -1,0 +1,40 @@
+{
+	"name": "PL_Ingestion",
+	"properties": {
+		"activities": [
+			{
+				"name": "Read_Customer_table",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select * from dbo.customers where CustomerID > 2",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_Azure_Sql_Server",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "demo",
+							"table_name": "demo"
+						}
+					},
+					"firstRowOnly": false
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2026-10-27T17:33:13Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

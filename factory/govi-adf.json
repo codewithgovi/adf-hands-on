@@ -1,0 +1,21 @@
+{
+	"name": "govi-adf",
+	"properties": {
+		"globalParameters": {
+			"email_recepient": {
+				"type": "string",
+				"value": "govardhankc@gmail.com"
+			}
+		},
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "11f62fbf-411f-4cee-8639-72289471c551",
+		"tenantId": "b41e81e0-df5b-4d4b-a6b1-b8af96b0a94f"
+	}
+}
